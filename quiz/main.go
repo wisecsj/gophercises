@@ -45,10 +45,11 @@ func main() {
 	ch := make(chan int)
 	go func(limit int64, ch chan int) {
 		var v int
+		timeout := time.After(time.Duration(limit) * time.Second)
 		for {
 			select {
 			case v = <-ch:
-			case <-time.After(time.Duration(limit) * time.Second):
+			case <-timeout:
 				fmt.Println("\nTime limit")
 				fmt.Printf("You scored %d out of %d.\n", v, len(problems))
 				os.Exit(0)
