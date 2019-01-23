@@ -43,6 +43,8 @@ func main() {
 	}
 
 	ch := make(chan int)
+
+	start := time.Now()
 	go func(limit int64, ch chan int) {
 		var v int
 		timeout := time.After(time.Duration(limit) * time.Second)
@@ -50,7 +52,9 @@ func main() {
 			select {
 			case v = <-ch:
 			case <-timeout:
-				fmt.Println("\nTime limit")
+				fmt.Println()
+				fmt.Printf("time cost:%v\n",time.Since(start))
+				fmt.Println("Time limit")
 				fmt.Printf("You scored %d out of %d.\n", v, len(problems))
 				os.Exit(0)
 			}
